@@ -6,7 +6,22 @@ function App() {
 
   return (
     <div className="App">
-      <div className="header"></div>
+      <div className="header">
+        <input type="color"></input>
+        <div className="select">
+          <select>
+            <option>Monochrome</option>
+            <option>Monochrome-dark</option>
+            <option>Monochrome-light</option>
+            <option>Analogic</option>
+            <option>Complement</option>
+            <option>Analogic-complement</option>
+            <option>Triad</option>
+          </select>
+        </div>
+
+        <button type="button">Get color scheme</button>
+      </div>
     </div>
   );
 }
