@@ -1,30 +1,77 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./App.scss";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [color, setColor] = useState<string | undefined>("#f55a5a");
+  const [mode, setMode] = useState<string | undefined>("monochrome");
+  const [colorScheme, setColorScheme] = useState<any[]>([]);
+  const colorRef = useRef<HTMLInputElement>(null);
+  const modeRef = useRef<HTMLSelectElement>(null);
+
+  const colorElements = document.querySelectorAll<HTMLElement>(".color");
+  const codeElements = document.querySelectorAll<HTMLElement>(".color-code");
+
+  // useEffect(() => {
+  //   if (colorScheme) {
+  //     const colorElements = document.querySelectorAll<HTMLElement>(".color");
+  //     const codeElements =
+  //       document.querySelectorAll<HTMLElement>(".color-code");
+
+  //     for (let i = 0; i < 5; i++) {
+  //       colorElements[i].style.backgroundColor = colorScheme[i].hex.value;
+  //       codeElements[i].textContent = colorScheme[i].hex.value;
+  //     }
+  //   }
+  // }, [colorScheme]);
+
+  function handleClick() {
+    fetch(
+      `https://www.thecolorapi.com/scheme?hex=${color?.slice(
+        1
+      )}&mode=${mode}&count=5`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        for (let i = 0; i < 5; i++) {
+          colorElements[i].style.backgroundColor = data.colors[i].hex.value;
+          codeElements[i].textContent = data.colors[i].hex.value;
+        }
+      });
+  }
 
   return (
     <div className="App">
       <div className="header">
-        <input type="color" value="#f55a5a"></input>
+        <input
+          ref={colorRef}
+          onChange={() => setColor(colorRef.current?.value)}
+          type="color"
+          name="color-code"
+          defaultValue="#f55a5a"
+        ></input>
         <div className="select">
-          <select>
-            <option>Monochrome</option>
-            <option>Monochrome-dark</option>
-            <option>Monochrome-light</option>
-            <option>Analogic</option>
-            <option>Complement</option>
-            <option>Analogic-complement</option>
-            <option>Triad</option>
+          <select
+            name="mode"
+            ref={modeRef}
+            onChange={() => setMode(modeRef.current?.value)}
+          >
+            <option value="monochrome">Monochrome</option>
+            <option value="monochrome-dark">Monochrome-dark</option>
+            <option value="monochrome-light">Monochrome-light</option>
+            <option value="analogic">Analogic</option>
+            <option value="complement">Complement</option>
+            <option value="analogic-complement">Analogic-complement</option>
+            <option value="triad">Triad</option>
           </select>
         </div>
 
-        <button type="button">Get color scheme</button>
+        <button type="button" onClick={handleClick}>
+          Get color scheme
+        </button>
       </div>
       <main>
         <div className="color color-1">
-          <div className="color-code">#F55A5A</div>
+          <div className="color-code hex-code-1">#F55A5A</div>
         </div>
         <div className="color color-2">
           <div className="color-code">#2B283A</div>
