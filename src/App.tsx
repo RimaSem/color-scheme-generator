@@ -1,28 +1,13 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, SyntheticEvent } from "react";
 import "./App.scss";
 
 function App() {
   const [color, setColor] = useState<string | undefined>("#f55a5a");
   const [mode, setMode] = useState<string | undefined>("monochrome");
-  const [colorScheme, setColorScheme] = useState<any[]>([]);
   const colorRef = useRef<HTMLInputElement>(null);
   const modeRef = useRef<HTMLSelectElement>(null);
-
   const colorElements = document.querySelectorAll<HTMLElement>(".color");
   const codeElements = document.querySelectorAll<HTMLElement>(".color-code");
-
-  // useEffect(() => {
-  //   if (colorScheme) {
-  //     const colorElements = document.querySelectorAll<HTMLElement>(".color");
-  //     const codeElements =
-  //       document.querySelectorAll<HTMLElement>(".color-code");
-
-  //     for (let i = 0; i < 5; i++) {
-  //       colorElements[i].style.backgroundColor = colorScheme[i].hex.value;
-  //       codeElements[i].textContent = colorScheme[i].hex.value;
-  //     }
-  //   }
-  // }, [colorScheme]);
 
   function handleClick() {
     fetch(
@@ -37,6 +22,23 @@ function App() {
           codeElements[i].textContent = data.colors[i].hex.value;
         }
       });
+  }
+
+  function copyToClipboard(e: SyntheticEvent) {
+    // const copyHex = document.getElementById("myInput");
+    // e.target.select();
+    // copyHex.setSelectionRange(0, 99999);
+
+    if ((e.target as HTMLDivElement).textContent) {
+      const text = (e.target as HTMLDivElement).textContent;
+      navigator.clipboard.writeText(text || "");
+    } else {
+      const text = (e.target as HTMLDivElement).style.backgroundColor;
+      navigator.clipboard.writeText(text || "");
+    }
+
+    // var tooltip = document.getElementById("myTooltip");
+    // tooltip.innerHTML = "Copied: " + copyText.value;
   }
 
   return (
@@ -70,19 +72,19 @@ function App() {
         </button>
       </div>
       <main>
-        <div className="color color-1">
+        <div className="color color-1" onClick={copyToClipboard}>
           <div className="color-code hex-code-1">#F55A5A</div>
         </div>
-        <div className="color color-2">
+        <div className="color color-2" onClick={copyToClipboard}>
           <div className="color-code">#2B283A</div>
         </div>
-        <div className="color color-3">
+        <div className="color color-3" onClick={copyToClipboard}>
           <div className="color-code">#FBF3AB</div>
         </div>
-        <div className="color color-4">
+        <div className="color color-4" onClick={copyToClipboard}>
           <div className="color-code">#AAD1B6</div>
         </div>
-        <div className="color color-5">
+        <div className="color color-5" onClick={copyToClipboard}>
           <div className="color-code">#A626D3</div>
         </div>
       </main>
