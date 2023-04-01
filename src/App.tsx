@@ -36,21 +36,21 @@ function App() {
       navigator.clipboard.writeText(text || "");
       setTooltip(text);
     }
-  }
 
-  if (tooltipRef.current) {
-    tooltipRef.current.style.visibility = "visible";
-    tooltipRef.current.style.opacity = "1";
-    setTimeout(() => {
-      if (tooltipRef.current) {
-        tooltipRef.current.style.opacity = "0";
-      }
-    }, 1500);
-    setTimeout(() => {
-      if (tooltipRef.current) {
-        tooltipRef.current.style.visibility = "hidden";
-      }
-    }, 1600);
+    if (tooltipRef.current) {
+      tooltipRef.current.style.visibility = "visible";
+      tooltipRef.current.style.opacity = "1";
+      setTimeout(() => {
+        if (tooltipRef.current) {
+          tooltipRef.current.style.opacity = "0";
+        }
+      }, 1500);
+      setTimeout(() => {
+        if (tooltipRef.current) {
+          tooltipRef.current.style.visibility = "hidden";
+        }
+      }, 1600);
+    }
   }
 
   return (
