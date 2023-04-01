@@ -14,6 +14,7 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    flex-wrap: wrap;
 
     input[type="color"] {
       width: 3.8125rem;
@@ -85,6 +86,7 @@
       transition: opacity 0.3s;
       opacity: 0;
       position: absolute;
+      text-align: center;
       background-color: rgb(25, 25, 25);
       padding: 1em;
       font-weight: 300;
@@ -143,6 +145,58 @@
     .header {
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
+    }
+  }
+}
+
+@media only screen and (max-width: 560px) {
+  .App {
+    height: 24em;
+    .header {
+      display: flex;
+      height: fit-content;
+      gap: 1em;
+      padding: 1em;
+
+      input[type="color"] {
+        width: 3rem;
+        height: 2.5rem;
+      }
+
+      .select {
+        select {
+          font-size: 0.8rem;
+          width: auto;
+          flex: 1;
+          padding: 0.56em 0.8em;
+          height: 2.8em;
+        }
+      }
+
+      button {
+        border: 1px solid #11b944;
+        color: #11b944;
+        flex: 1;
+        height: 2.8em;
+        min-width: fit-content;
+      }
+    }
+    main {
+      flex-direction: column;
+
+      #tooltip {
+        font-size: 0.9rem;
+      }
+
+      .color {
+        align-items: center;
+        .color-code {
+          border: none;
+          width: fit-content;
+          height: fit-content;
+          background-color: inherit;
+        }
+      }
     }
   }
 }
