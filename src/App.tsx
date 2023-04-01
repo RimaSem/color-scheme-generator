@@ -1,11 +1,13 @@
-import { useState, useRef, SyntheticEvent } from "react";
+import { useState, useRef, MouseEvent } from "react";
 import "./App.scss";
 
 function App() {
   const [color, setColor] = useState<string | undefined>("#f55a5a");
   const [mode, setMode] = useState<string | undefined>("monochrome");
+  const [tooltip, setTooltip] = useState<string | null>("testing");
   const colorRef = useRef<HTMLInputElement>(null);
   const modeRef = useRef<HTMLSelectElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
   const colorElements = document.querySelectorAll<HTMLElement>(".color");
   const codeElements = document.querySelectorAll<HTMLElement>(".color-code");
 
@@ -24,21 +26,31 @@ function App() {
       });
   }
 
-  function copyToClipboard(e: SyntheticEvent) {
-    // const copyHex = document.getElementById("myInput");
-    // e.target.select();
-    // copyHex.setSelectionRange(0, 99999);
-
+  function copyToClipboard(e: MouseEvent) {
     if ((e.target as HTMLDivElement).textContent) {
       const text = (e.target as HTMLDivElement).textContent;
       navigator.clipboard.writeText(text || "");
+      setTooltip(text);
     } else {
       const text = (e.target as HTMLDivElement).style.backgroundColor;
       navigator.clipboard.writeText(text || "");
+      setTooltip(text);
     }
+  }
 
-    // var tooltip = document.getElementById("myTooltip");
-    // tooltip.innerHTML = "Copied: " + copyText.value;
+  if (tooltipRef.current) {
+    tooltipRef.current.style.visibility = "visible";
+    tooltipRef.current.style.opacity = "1";
+    setTimeout(() => {
+      if (tooltipRef.current) {
+        tooltipRef.current.style.opacity = "0";
+      }
+    }, 1500);
+    setTimeout(() => {
+      if (tooltipRef.current) {
+        tooltipRef.current.style.visibility = "hidden";
+      }
+    }, 1600);
   }
 
   return (
@@ -72,6 +84,9 @@ function App() {
         </button>
       </div>
       <main>
+        <div ref={tooltipRef} id="tooltip">
+          Copied to clipboard: {tooltip}
+        </div>
         <div className="color color-1" onClick={copyToClipboard}>
           <div className="color-code hex-code-1">#F55A5A</div>
         </div>
